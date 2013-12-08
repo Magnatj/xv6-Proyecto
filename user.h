@@ -22,6 +22,10 @@ int getpid(void);
 char* sbrk(int);
 int sleep(int);
 int uptime(void);
+long random(void);
+int random_set(int);
+int change_seed(int, int);
+long actual_seed(int);
 
 // ulib.c
 int stat(char*, struct stat*);

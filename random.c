@@ -1,10 +1,9 @@
-#define "types.h"
-#define "user.h"
-#define "defs.h"
+#include "types.h"
+#include  "defs.h"
 
 #define MODLUS 2147483647
-#define MULT1 24112
-#define MULT2 26143
+#define MULTONE 24112
+#define MULTTWO 26143
 
 static float randomValue = 0.0;
 
@@ -28,12 +27,80 @@ static long zrng[] =
   190641742,1645390429, 264907697, 620389253,1502074852, 927711160,
   364849192,2049576050, 638580085, 547070247} ;
 
-int sys_random(void)
+/* Regresa el numero random */
+float sys_random(void)
 {
 	return randomValue;
 }
 
+/* Genera el numero random */
 int sys_random_set(void)
 {
+	long zi, lowprd, hi3l;
+	int stream;
+
+	if(argint(0, &stream)<0)
+	{
+		return -1;
+	}
+	if(stream > 0 && stream < 101)
+	{		
+		zi = zrng[stream];
 	
+		lowprd = (zi & 65535) * MULTONE;
+		hi3l = (zi >> 16) * MULTONE + (lowprd >> 16);
+		zi = ((lowprd & 65535) - MODLUS) + ((hi3l & 32767) << 16) + (hi3l >> 15);
+	
+		if(zi < 0) zi += MODLUS;
+		lowprd = (zi & 65535) * MULTTWO;
+		hi3l = (zi >> 16) * MULTTWO + (lowprd >> 16);
+		zi = ((lowprd & 65535)-MODLUS) + ((hi3l &32767) << 16) + (hi3l >> 15);
+
+		if(zi < 0) zi += MODLUS;
+		zrng[stream] = zi;
+	
+		randomValue = ((zi >> 7 | 1) + 1) / 1667772116.0; //¦
+	
+		return 0;
+	}
+
+	else
+	{
+		return -1;
+	}
 }
+
+//Cambiamos el valor de la semilla solicitada
+int sys_change_seed (void)
+{
+	int stream;
+	argint(0, &stream);
+	
+	int  set;
+	argint(1, &set);
+
+	if(argint(0, &stream) < 0 )
+	{
+		return -1;
+	}	
+
+	if(argint(1, &set) < 0)
+	{
+		return -1;
+	}
+
+	zrng[stream] = set;
+	
+	return 0;
+}
+
+//Regresa el zrng actual del stream 
+int sys_actual_seed ()
+{
+	int stream;
+	if(argint(0, &stream) < 0)
+	{
+		return -1;
+	}
+	return (int)zrng[stream];
+} 

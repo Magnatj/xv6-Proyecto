@@ -20,3 +20,7 @@
 #define SYS_link   19
 #define SYS_mkdir  20
 #define SYS_close  21
+#define SYS_random 22
+#define SYS_random_set 23
+#define SYS_change_seed 24
+#define SYS_actual_seed 25

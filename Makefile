@@ -15,6 +15,7 @@ OBJS = \
 	picirq.o\
 	pipe.o\
 	proc.o\
+	random.o\
 	spinlock.o\
 	string.o\
 	swtch.o\
@@ -164,6 +165,8 @@ UPROGS=\
 	_ln\
 	_ls\
 	_mkdir\
+	_random_test\
+	_seed_test\
 	_rm\
 	_sh\
 	_stressfs\

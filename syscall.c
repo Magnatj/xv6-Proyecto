@@ -98,6 +98,10 @@ extern int sys_unlink(void);
 extern int sys_wait(void);
 extern int sys_write(void);
 extern int sys_uptime(void);
+extern int  sys_random(void);
+extern int sys_random_set(void);
+extern int sys_change_seed(void);
+extern int sys_actual_seed(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -121,6 +125,10 @@ static int (*syscalls[])(void) = {
 [SYS_link]    sys_link,
 [SYS_mkdir]   sys_mkdir,
 [SYS_close]   sys_close,
+[SYS_random]  sys_random,
+[SYS_random_set] sys_random_set,
+[SYS_change_seed] sys_change_seed,
+[SYS_actual_seed] sys_actual_seed
 };
 
 void

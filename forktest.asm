@@ -39,7 +39,7 @@ forktest(void)
   int n, pid;
 
   printf(1, "fork test\n");
-  2f:	c7 44 24 04 18 04 00 	movl   $0x418,0x4(%esp)
+  2f:	c7 44 24 04 38 04 00 	movl   $0x438,0x4(%esp)
   36:	00 
   37:	c7 04 24 01 00 00 00 	movl   $0x1,(%esp)
   3e:	e8 bd ff ff ff       	call   0 <printf>
@@ -83,7 +83,7 @@ forktest(void)
     printf(1, "fork claimed to work N times!\n", N);
   78:	c7 44 24 08 e8 03 00 	movl   $0x3e8,0x8(%esp)
   7f:	00 
-  80:	c7 44 24 04 24 04 00 	movl   $0x424,0x4(%esp)
+  80:	c7 44 24 04 44 04 00 	movl   $0x444,0x4(%esp)
   87:	00 
   88:	c7 04 24 01 00 00 00 	movl   $0x1,(%esp)
   8f:	e8 6c ff ff ff       	call   0 <printf>
@@ -97,7 +97,7 @@ forktest(void)
   9e:	85 c0                	test   %eax,%eax
   a0:	79 19                	jns    bb <forktest+0x92>
       printf(1, "wait stopped early\n");
-  a2:	c7 44 24 04 43 04 00 	movl   $0x443,0x4(%esp)
+  a2:	c7 44 24 04 63 04 00 	movl   $0x463,0x4(%esp)
   a9:	00 
   aa:	c7 04 24 01 00 00 00 	movl   $0x1,(%esp)
   b1:	e8 4a ff ff ff       	call   0 <printf>
@@ -122,7 +122,7 @@ forktest(void)
   cd:	83 f8 ff             	cmp    $0xffffffff,%eax
   d0:	74 19                	je     eb <forktest+0xc2>
     printf(1, "wait got too many\n");
-  d2:	c7 44 24 04 57 04 00 	movl   $0x457,0x4(%esp)
+  d2:	c7 44 24 04 77 04 00 	movl   $0x477,0x4(%esp)
   d9:	00 
   da:	c7 04 24 01 00 00 00 	movl   $0x1,(%esp)
   e1:	e8 1a ff ff ff       	call   0 <printf>
@@ -131,7 +131,7 @@ forktest(void)
   }
   
   printf(1, "fork test OK\n");
-  eb:	c7 44 24 04 6a 04 00 	movl   $0x46a,0x4(%esp)
+  eb:	c7 44 24 04 8a 04 00 	movl   $0x48a,0x4(%esp)
   f2:	00 
   f3:	c7 04 24 01 00 00 00 	movl   $0x1,(%esp)
   fa:	e8 01 ff ff ff       	call   0 <printf>
@@ -688,3 +688,27 @@ SYSCALL(uptime)
  410:	b8 0e 00 00 00       	mov    $0xe,%eax
  415:	cd 40                	int    $0x40
  417:	c3                   	ret    
+
+00000418 <random>:
+SYSCALL(random)
+ 418:	b8 16 00 00 00       	mov    $0x16,%eax
+ 41d:	cd 40                	int    $0x40
+ 41f:	c3                   	ret    
+
+00000420 <random_set>:
+SYSCALL(random_set)
+ 420:	b8 17 00 00 00       	mov    $0x17,%eax
+ 425:	cd 40                	int    $0x40
+ 427:	c3                   	ret    
+
+00000428 <change_seed>:
+SYSCALL(change_seed)
+ 428:	b8 18 00 00 00       	mov    $0x18,%eax
+ 42d:	cd 40                	int    $0x40
+ 42f:	c3                   	ret    
+
+00000430 <actual_seed>:
+SYSCALL(actual_seed)
+ 430:	b8 19 00 00 00       	mov    $0x19,%eax
+ 435:	cd 40                	int    $0x40
+ 437:	c3                   	ret    
