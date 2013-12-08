@@ -6,6 +6,7 @@
 #define MULTTWO 26143
 
 static float randomValue = 0.0;
+static int seed = 0;
 
 static long zrng[] = 
 {         0, 
@@ -30,6 +31,31 @@ static long zrng[] =
 /* Regresa el numero random */
 float sys_random(void)
 {
+	long zi, lowprd, hi3l;
+
+        if(seed<=0)
+	{
+		seed = 0;
+        }
+
+        if(seed > 0 && seed < 101)
+        {
+                zi = zrng[seed];
+
+                lowprd = (zi & 65535) * MULTONE;
+                hi3l = (zi >> 16) * MULTONE + (lowprd >> 16);
+                zi = ((lowprd & 65535) - MODLUS) + ((hi3l & 32767) << 16) + (hi3l >> 15);
+
+                if(zi < 0) zi += MODLUS;
+                lowprd = (zi & 65535) * MULTTWO;
+                hi3l = (zi >> 16) * MULTTWO + (lowprd >> 16);
+                zi = ((lowprd & 65535)-MODLUS) + ((hi3l &32767) << 16) + (hi3l >> 15);
+
+                if(zi < 0) zi += MODLUS;
+                zrng[seed] = zi;
+
+                randomValue = ((zi >> 7 | 1) + 1) / 1667772116.0;
+	}
 	return randomValue;
 }
 
@@ -37,15 +63,14 @@ float sys_random(void)
 int sys_random_set(void)
 {
 	long zi, lowprd, hi3l;
-	int stream;
 
-	if(argint(0, &stream)<0)
+	if(argint(0, &seed)<0)
 	{
 		return -1;
 	}
-	if(stream > 0 && stream < 101)
+	if(seed > 0 && seed < 101)
 	{		
-		zi = zrng[stream];
+		zi = zrng[seed];
 	
 		lowprd = (zi & 65535) * MULTONE;
 		hi3l = (zi >> 16) * MULTONE + (lowprd >> 16);
@@ -57,7 +82,7 @@ int sys_random_set(void)
 		zi = ((lowprd & 65535)-MODLUS) + ((hi3l &32767) << 16) + (hi3l >> 15);
 
 		if(zi < 0) zi += MODLUS;
-		zrng[stream] = zi;
+		zrng[seed] = zi;
 	
 		randomValue = ((zi >> 7 | 1) + 1) / 1667772116.0; //¦
 	
